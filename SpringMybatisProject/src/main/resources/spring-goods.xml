@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans
+			http://www.springframework.org/schema/beans/spring-beans.xsd
+			"
+>
+
+	<bean class="controller.goods.GoodsController" />
+	<bean class="service.goods.GoodsNumberService"/>
+	<bean class="repository.GoodsRepository" />
+	<bean class="service.goods.GoodsWriteService" />
+	<bean class="service.goods.GoodsListService" />
+
+</beans>
+<!-- 아이디와 클래스명이 같아야한다. -->
+<!-- TIP
+아이디와 클래스명이 다르다면 id와 class를 각각 작성해야 하지만
+아이디와 클래스명이 같을경우 클래스만 작성해도 아이디는 자동 생성 된다.
+-->

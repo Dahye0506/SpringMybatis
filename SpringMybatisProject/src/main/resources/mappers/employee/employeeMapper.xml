@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mappers.employeeMapper">
+
+<!-- 반복되는 sql문 변수화 -->
+<sql id="baseColumn">
+	EMPLOYEE_ID employeeId, EMP_USERID empUserId, EMP_PW empPw, EMP_NAME empName, HIRE_DATE hireDate, JOB_ID jobId, PH_NUMBER PhNumber, OFFICE_NUMBER officeNumber, EMAIL email, EMP_ADDRESS empAddress
+</sql>
+
+<select id="empNo" resultType="string" >
+	select nvl(max(EMPLOYEE_ID),0) + 1 from employees
+</select>
+<insert id="empInsert" parameterType="Model.EmployeeDTO">
+	insert into employees(EMPLOYEE_ID,EMP_USERID,EMP_PW,EMP_NAME,HIRE_DATE,JOB_ID,PH_NUMBER,OFFICE_NUMBER,EMAIL,EMP_ADDRESS)
+	values(#{employeeId},#{empUserId},#{empPw},#{empName},#{hireDate},#{jobId},#{phNumber},#{officeNumber},#{email},#{empAddress})
+</insert>
+
+
+<!-- 리스트 가져오기 -->
+<select id="empList" resultType="Model.EmployeeDTO">
+select
+	<include refid="baseColumn" />
+from employees
+</select>
+
+
+<!-- 직원 정보 가져오기 -->
+<!-- include 사용하여 sql문 가져오기 -->
+<select id="empInfo" parameterType="string" resultType="Model.EmployeeDTO">
+select
+	<include refid="baseColumn" />
+from employees
+where EMPLOYEE_ID = #{empId}
+</select>
+
+
+<!-- 직원정보 업데이트,수정 -->
+<update id="empUpdate" parameterType="Model.EmployeeDTO">
+	update employees
+	set JOB_ID = #{jobId}, PH_NUMBER = #{phNumber}, OFFICE_NUMBER = #{officeNumber},
+		EMAIL = #{email}, EMP_ADDRESS = #{empAddress}
+	where EMPLOYEE_ID = #{employeeId}
+</update>
+
+<delete id="empDelete" parameterType="string">
+	delete from employees
+	where EMPLOYEE_ID = #{empId}
+</delete>
+
+
+</mapper>
