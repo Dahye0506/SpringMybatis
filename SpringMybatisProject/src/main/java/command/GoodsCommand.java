@@ -8,15 +8,13 @@ public class GoodsCommand {
 	String prodName;
 	Long prodPrice;
 	String prodCapacity;
-	String prodSuppleyer;
+	String prodSupplyer;
 	Long prodDelFee;
 	String recommend;
 	String prodDetail;
 	MultipartFile [] prodImage1;
+	
 	// 이미지 여러개 등록하기때문에 배열로 가져옴
-	
-	
-	
 	public String getCtgr() {
 		return ctgr;
 	}
@@ -47,11 +45,11 @@ public class GoodsCommand {
 	public void setProdCapacity(String prodCapacity) {
 		this.prodCapacity = prodCapacity;
 	}
-	public String getProdSuppleyer() {
-		return prodSuppleyer;
+	public String getProdSupplyer() {
+		return prodSupplyer;
 	}
-	public void setProdSuppleyer(String prodSuppleyer) {
-		this.prodSuppleyer = prodSuppleyer;
+	public void setProdSupplyer(String prodSupplyer) {
+		this.prodSupplyer = prodSupplyer;
 	}
 	public Long getProdDelFee() {
 		return prodDelFee;

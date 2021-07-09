@@ -8,13 +8,13 @@
 	select PROD_SEQ.nextval from dual
 </select>
 
-<insert id="goodsWrite" parameterType="gd" >
-	insert into products(PROD_NUM, PROD_NAME, PROD_PRICE, 
-		PROD_IMAGE, PROD_DETAIL, PROD_CAPACITY,
-		PROD_SUPPLYER, PROD_DEL_FEE, RECOMMEND, EMPLOYEE_ID, CTGR)
-	values (#{prodNum},#{prodName},#{prodPrice},#{prodImage},
+<insert id="goodsWrite" parameterType="Model.GoodsDTO" >
+	insert into products(PROD_NUM, PROD_NAME, PROD_PRICE,
+		PROD_DETAIL, PROD_CAPACITY, PROD_SUPPLYER, PROD_DEL_FEE,
+		RECOMMEND, EMPLOYEE_ID, CTGR, PROD_IMAGE)
+	values (#{prodNum},#{prodName},#{prodPrice},
 			#{prodDetail},#{prodCapacity},#{prodSupplyer},#{prodDelFee},
-			#{recommend},#{employeeId},#{ctgr})
+			#{recommend},#{employeeId},#{ctgr},#{prodImage})
 </insert>
 
 

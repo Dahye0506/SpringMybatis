@@ -13,6 +13,7 @@ import java.util.UUID;
 
 
 public class GoodsWriteService {
+	//DTO가 가지고 있는 값은 repository를 통해 이디에 저장한다.
 	@Autowired
 	GoodsRepository goodsRepository;
 	
@@ -25,14 +26,16 @@ public class GoodsWriteService {
 		dto.setProdName(goodsCommand.getProdName());
 		dto.setProdNum(goodsCommand.getGoodsNum());
 		dto.setProdPrice(goodsCommand.getProdPrice());
-		dto.setProdSupplyer(goodsCommand.getProdSuppleyer());
+		dto.setProdSupplyer(goodsCommand.getProdSupplyer());
 		dto.setRecommend(goodsCommand.getRecommend());
 		//employeeId는 로그인 시 session에 저장됨
 		AuthInfoDTO authInfo = (AuthInfoDTO)session.getAttribute("authInfo");
-		dto.setEmployeeId(authInfo.getGrade());
-		
-	
-		//db에는 이름만 저장하기때문에 변수 생성
+		//상품등록할때는 직원 아이디가 필요함.
+		String employeeId = authInfo.getGrade();
+		dto.setEmployeeId(employeeId);
+
+		// DB에는 파일 이름만 저장해야한다(파일 관리및 용량 때문에)
+		//db에는 파일이름만 저장하기 위해 originalFilename을 가녀와서 확장자 추출
 		String prodImage = "";
 		for(MultipartFile mf : goodsCommand.getProdImage1()) {
 			String original = mf.getOriginalFilename();
@@ -73,8 +76,6 @@ public class GoodsWriteService {
 		System.out.println(dto.getProdPrice()); 
 		
 		goodsRepository.goodsWrite(dto);
-		
-		
 		
 		
 	}

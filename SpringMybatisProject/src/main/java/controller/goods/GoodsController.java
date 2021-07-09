@@ -51,7 +51,7 @@ public class GoodsController {
 		}else {
 		//에러가없다면 굿즈커멘드에 값을 저장하고 그값은 goodswirte에 있음 
 		goodsWriteService.goodsWrite(goodsCommand,session);
-		return "redirect:/goods/goodsList";
+		return "redirect:goodsList";
 		}
 	}
 	
