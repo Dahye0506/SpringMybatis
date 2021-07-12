@@ -7,13 +7,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import command.GoodsCommand;
+import service.goods.GoodsDetailService;
 import service.goods.GoodsListService;
 import service.goods.GoodsNumberService;
+import service.goods.GoodsUpdateService;
 import service.goods.GoodsWriteService;
-import validator.GoodsCommandValidator;
+import validator.GoodsCommandValidate;
 
 @Controller
 @RequestMapping("goods")
@@ -22,6 +24,10 @@ public class GoodsController {
 	GoodsNumberService goodsNumberService;
 	@Autowired
 	GoodsWriteService goodsWriteService;
+	@Autowired
+	GoodsDetailService goodsDetailService;
+	@Autowired
+	GoodsUpdateService goodsUpdateService;
 	@Autowired
 	GoodsListService goodsListService;
 
@@ -42,9 +48,9 @@ public class GoodsController {
 	}
 	
 	//상품 등록 버튼누르면 / 굿즈 조인은 레지스트로부터 값 받는곳 
-	@RequestMapping(value="goodsJoin", method=RequestMethod.POST)
+	@RequestMapping(value="goodsJoin")
 	public String join(GoodsCommand goodsCommand, Errors errors, HttpSession session) {
-		new GoodsCommandValidator().validate(goodsCommand, errors);
+		new GoodsCommandValidate().validate(goodsCommand, errors);
 		if (errors.hasErrors()) {
 			return "goods/goodsJoin";
 					//에러가 생기면 다시 상품등록으로 열리게 설정
@@ -53,6 +59,36 @@ public class GoodsController {
 		goodsWriteService.goodsWrite(goodsCommand,session);
 		return "redirect:goodsList";
 		}
+	}
+	
+	@RequestMapping("goodsDetail")
+	public String prodDetail(@RequestParam(value="prodNum") String prodNum, Model model) {
+							//                      	가독성을 높이기위해 변수명 같게 작성함
+		// 디비로부터 자료를 가져오기 위해서 리포시토리 생성
+		// 리포시토리 : 디비에 접속하기 위해
+		// 서비스 : 리포시토리에 데이터를 받아오거나, 전달하기 위해서 사용
+		goodsDetailService.goodsDetail(prodNum, model);
+		return "good/goodsDetail";
+	}
+	@RequestMapping("prodModify")
+	public String prodModify(
+		@RequestParam(value="prodNum") String prodNum, Model model) {
+		goodsDetailService.goodsDetail(prodNum, model);
+		//수정페이지 만들기
+		return "goods/goodsModify";
+	}
+	
+	@RequestMapping("goodsUpdate")
+	public String goodsUpdate(GoodsCommand goodsCommand, 
+			Errors errors) {
+		new GoodsCommandValidate().validate(goodsCommand, errors);
+		if(errors.hasErrors()) {
+			// 값을 command로 받았으므로 오류 발생하여 값을 보낼때 다시 
+			// command로 전달된다.
+			return "goods/goodsModify";
+		}
+		goodsUpdateService.goodsUpdate(goodsCommand);
+		return "redirect:/goods/goodsList";
 	}
 	
 	

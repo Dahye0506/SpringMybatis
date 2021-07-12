@@ -4,7 +4,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 public class GoodsCommand {
 	String ctgr;
-	Long goodsNum;
+	Long prodNum;
 	String prodName;
 	Long prodPrice;
 	String prodCapacity;
@@ -13,19 +13,17 @@ public class GoodsCommand {
 	String recommend;
 	String prodDetail;
 	MultipartFile [] prodImage1;
-	
-	// 이미지 여러개 등록하기때문에 배열로 가져옴
 	public String getCtgr() {
 		return ctgr;
 	}
 	public void setCtgr(String ctgr) {
 		this.ctgr = ctgr;
 	}
-	public Long getGoodsNum() {
-		return goodsNum;
+	public Long getProdNum() {
+		return prodNum;
 	}
-	public void setGoodsNum(Long goodsNum) {
-		this.goodsNum = goodsNum;
+	public void setProdNum(Long prodNum) {
+		this.prodNum = prodNum;
 	}
 	public String getProdName() {
 		return prodName;
@@ -75,7 +73,4 @@ public class GoodsCommand {
 	public void setProdImage1(MultipartFile[] prodImage1) {
 		this.prodImage1 = prodImage1;
 	}
-	
-	
-	
 }

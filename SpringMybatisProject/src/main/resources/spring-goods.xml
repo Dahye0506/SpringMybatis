@@ -7,11 +7,13 @@
 			"
 >
 
-	<bean class="controller.goods.GoodsController" />
-	<bean class="service.goods.GoodsNumberService"/>
-	<bean class="repository.GoodsRepository" />
+	<bean class="controller.goods.GoodsController"/>
+	<bean class="repository.GoodsRepository"/>
+	<bean class="service.goods.GoodsNumberService" />
 	<bean class="service.goods.GoodsWriteService" />
 	<bean class="service.goods.GoodsListService" />
+	<bean class="service.goods.GoodsDetailService" />
+	<bean class="service.goods.GoodsUpdateService" />
 
 </beans>
 <!-- 아이디와 클래스명이 같아야한다. -->

@@ -17,7 +17,11 @@ public class GoodsRepository {
 	public String goodsNum() {
 		statement = namespace + ".goodsNum";
 		return sqlSession.selectOne(statement);
-		
+	}
+	
+	public void goodsInsert(GoodsDTO dto) {
+		statement = namespace + ".goodsInsert";
+		sqlSession.insert(statement, dto);
 	}
 	
 	public List<GoodsDTO> goodsList(){
@@ -27,9 +31,17 @@ public class GoodsRepository {
 	}
 	
 		//반환값이 없어서 void처리
-	public void goodsWrite(GoodsDTO dto) { //작동안함
-		statement = namespace + ".goodsWrite";
-		int i = sqlSession.insert(statement, dto);
-		System.out.println(i + "행이 추가되었습니다.");
+	
+	//제품상세페이지 받아오기
+	public GoodsDTO goodsDetail(String prodNum) {
+		statement = namespace + ".goodsDetail";
+		return sqlSession.selectOne(statement, prodNum);
+
 	}
+	public void goodsUpdate(GoodsDTO dto) {
+		statement = namespace +".goodsUpdate";
+		sqlSession.update(statement, dto);
+	}
+	
+	
 }

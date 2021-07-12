@@ -21,11 +21,15 @@
 		<mvc:jsp prefix="/WEB-INF/view/"/>
 		<mvc:jsp suffix=".jsp"/>
 	</mvc:view-resolvers>
+	<!-- prefix 경로 지정/이미지 불러오기 -->	
+	<mvc:resources location="/WEB-INF/view/" mapping="/**" cache-period="14400"></mvc:resources>
+	
 	<!-- password암호화 -->
 	<bean id = "bcryptPasswordEncoder" 
 	class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder">
 		<constructor-arg value="10"/>
 	</bean>
+	
 	<!-- 파일 업로드 -->
 	<bean id="multipartResolver" 
 		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">

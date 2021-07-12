@@ -4,6 +4,21 @@
   
 <mapper namespace="mappers.goodsMapper">
 
+<!-- result는 일반컬럼 -->
+<resultMap type="Model.GoodsDTO" id="baseResult">
+	<id column="PROD_NUM" jdbcType="BIGINT" property="prodNum"/>
+	<result column="PROD_NAME" jdbcType="VARCHAR" property="prodName"/>
+	<result column="PROD_PRICE" javaType="BIGINT" property="prodPrice" />
+	<result column="PROD_IMAGE" javaType="VARCHAR" property="prodImage" />
+	<result column="PROD_DETAIL" javaType="VARCHAR" property="prodDetail" />
+	<result column="PROD_CAPACITY" javaType="BIGINT" property="prodCapacity" />
+	<result column="PROD_SUPPLYER" javaType="VARCHAR" property="prodSupplyer" />
+	<result column="PROD_DEL_FEE" javaType="BIGINT" property="prodDelFee" />
+	<result column="RECOMMEND" javaType="VARCHAR" property="recommend" />
+	<result column="EMPLOYEE_ID" javaType="VARCHAR" property="employeeId" />
+	<result column="CTGR" javaType="VARCHAR" property="ctgr" />
+</resultMap>
+
 <select id="goodsNum" resultType="string">
 	select PROD_SEQ.nextval from dual
 </select>
@@ -26,4 +41,18 @@
 	from products
 
 </select>
+<!-- id 는 primary key -->
+
+
+<select id="goodsDetail" parameterType="string" resultMap="baseResult">
+	select PROD_NUM, PROD_NAME, PROD_PRICE, 
+		PROD_IMAGE, PROD_DETAIL, PROD_CAPACITY,
+		PROD_SUPPLYER, PROD_DEL_FEE, RECOMMEND,
+		EMPLOYEE_ID, CTGR
+	from products
+	where PROD_NUM = #{prodNum}
+</select>
+
+
+
 </mapper>

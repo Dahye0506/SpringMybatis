@@ -15,7 +15,6 @@
 					<option value="cosmetic">화장품</option>
 					<option value="food">음식</option>
 					<option value="car">자동차용품</option>
-					<option value="it">가전제품</option>
 				</select>
 				<input type="text" name="goodsNum" 
 						value="${goodsNum }" readonly="readonly"/>

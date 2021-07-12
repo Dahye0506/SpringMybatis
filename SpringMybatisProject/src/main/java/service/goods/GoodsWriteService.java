@@ -24,7 +24,7 @@ public class GoodsWriteService {
 		dto.setProdDelFee(goodsCommand.getProdDelFee());
 		dto.setProdDetail(goodsCommand.getProdDetail());
 		dto.setProdName(goodsCommand.getProdName());
-		dto.setProdNum(goodsCommand.getGoodsNum());
+		dto.setProdNum(goodsCommand.getProdNum());
 		dto.setProdPrice(goodsCommand.getProdPrice());
 		dto.setProdSupplyer(goodsCommand.getProdSupplyer());
 		dto.setRecommend(goodsCommand.getRecommend());
@@ -75,7 +75,7 @@ public class GoodsWriteService {
 		System.out.println(dto.getProdNum());
 		System.out.println(dto.getProdPrice()); 
 		
-		goodsRepository.goodsWrite(dto);
+		goodsRepository.goodsInsert(dto);
 		
 		
 	}
