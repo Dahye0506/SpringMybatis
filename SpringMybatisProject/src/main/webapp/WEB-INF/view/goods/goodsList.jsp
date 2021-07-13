@@ -17,7 +17,7 @@
 	<tr><td><a href="prodDetail?prodNum=${dto.prodNum }">${dto.prodNum }</a></td>
 	    <td>${dto.ctgr }</td>
 		<td>${dto.prodName }</td>
-		<td>가격</td>
+		<td><fmt:formatNumber value="${dto.prodPrice }" type="currency"/> </td>		
 	    <td>${dto.prodDelFee }</td></tr>
 	</c:forEach>
 	<tr><td colspan="8"></td></tr>

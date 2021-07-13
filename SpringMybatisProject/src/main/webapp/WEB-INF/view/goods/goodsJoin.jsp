@@ -16,7 +16,7 @@
 					<option value="food">음식</option>
 					<option value="car">자동차용품</option>
 				</select>
-				<input type="text" name="goodsNum" 
+				<input type="text" name="prodNum" 
 						value="${goodsNum }" readonly="readonly"/>
 				</td></tr>		
 		<tr><th>상품명</th>
@@ -37,7 +37,7 @@
 		<tr><th>내용</th>
 			<td><textarea rows="6" cols="50" name="prodDetail"></textarea></td></tr>
 		<tr><th>파일</th>
-			<td><input type="file" name="prodImage1" multiple="multiple"/></td></tr>
+			<td><input type="file" name="prodImage" multiple="multiple"/></td></tr>
 		<tr><th colspan="2">
 			<input type="submit" value="상품 등록" />
 			<input type="reset" value="취소" />

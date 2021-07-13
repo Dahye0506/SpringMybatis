@@ -33,33 +33,53 @@ public class GoodsWriteService {
 		//상품등록할때는 직원 아이디가 필요함.
 		String employeeId = authInfo.getGrade();
 		dto.setEmployeeId(employeeId);
+		
+		
+		//확인하기1
+		System.out.println("★★★★★★★★★★★★★★확인용1★★★★★★★★★★★");
+		System.out.println("작동확인/GoodsWriteService");
+		System.out.println(dto.getCtgr());
+		System.out.println(dto.getEmployeeId());
+		System.out.println(dto.getProdCapacity());
+		System.out.println(dto.getProdDetail());
+		System.out.println(dto.getProdImage());
+		System.out.println(dto.getProdName());
+		System.out.println(dto.getProdSupplyer());
+		System.out.println(dto.getRecommend());
+		System.out.println(dto.getProdDelFee());
+		System.out.println(dto.getProdNum());
+		System.out.println(dto.getProdPrice());
+		
 
 		// DB에는 파일 이름만 저장해야한다(파일 관리및 용량 때문에)
 		//db에는 파일이름만 저장하기 위해 originalFilename을 가녀와서 확장자 추출
 		String prodImage = "";
-		for(MultipartFile mf : goodsCommand.getProdImage1()) {
-			String original = mf.getOriginalFilename();
-			//확장자를 알기위해서는 OriginalFilename 사용
-			//original에서 확장자만 추출
-													//뒤에있는 . (점)부터 확장자 추출
-			String originalExt = original.substring(original.lastIndexOf("."));
-			String store = UUID.randomUUID().toString().replace("-", "") + originalExt;
-					//전세계 유일한 아이디 생성 . 스트링으로 변환. "-"대쉬는 ""삭제 처리 + 뒤에 익스텐션해야 확장자명 생성
-
-			//디비에 저장할 파일명 추출하여 prodImage에 저장
-			prodImage += store + ",";
-			//파일을 시스템에 저장
-			String filePath = session.getServletContext().getRealPath("WEB-INF/view/goods/upload");
-			File file = new File(filePath + "/" + store);
-            //파일저장
-            try {
-                mf.transferTo(file);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
+		if(!goodsCommand.getProdImage()[0].getOriginalFilename().equals("")) {
+			
+			for(MultipartFile mf : goodsCommand.getProdImage()) {
+				String original = mf.getOriginalFilename();
+				//확장자를 알기위해서는 OriginalFilename 사용
+				//original에서 확장자만 추출
+														//뒤에있는 . (점)부터 확장자 추출
+				String originalExt = original.substring(original.lastIndexOf("."));
+				String store = UUID.randomUUID().toString().replace("-", "") + originalExt;
+						//전세계 유일한 아이디 생성 . 스트링으로 변환. "-"대쉬는 ""삭제 처리 + 뒤에 익스텐션해야 확장자명 생성
+	
+				//디비에 저장할 파일명 추출하여 prodImage에 저장
+				prodImage += store + ",";
+				//파일을 시스템에 저장
+				String filePath = session.getServletContext().getRealPath("WEB-INF/view/goods/upload");
+				File file = new File(filePath + "/" + store);
+	            //파일저장
+	            try {
+	                mf.transferTo(file);
+	            } catch (Exception e) {
+	                e.printStackTrace();
+	            }
+	
+			}
+			dto.setProdImage(prodImage);
 		}
-		dto.setProdImage(prodImage);
 		//확인하기
 		System.out.println("★★★★★★★★★★★★★★★★★★★★★★★★★");
 		System.out.println("작동확인/GoodsWriteService");

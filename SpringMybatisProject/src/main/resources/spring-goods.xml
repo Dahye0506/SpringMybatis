@@ -14,6 +14,8 @@
 	<bean class="service.goods.GoodsListService" />
 	<bean class="service.goods.GoodsDetailService" />
 	<bean class="service.goods.GoodsUpdateService" />
+	<bean class="service.goods.GoodsDeleteService" />
+
 
 </beans>
 <!-- 아이디와 클래스명이 같아야한다. -->

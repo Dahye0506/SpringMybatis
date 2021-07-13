@@ -30,7 +30,6 @@ public class GoodsRepository {
 
 	}
 	
-		//반환값이 없어서 void처리
 	
 	//제품상세페이지 받아오기
 	public GoodsDTO goodsDetail(String prodNum) {
@@ -41,6 +40,12 @@ public class GoodsRepository {
 	public void goodsUpdate(GoodsDTO dto) {
 		statement = namespace +".goodsUpdate";
 		sqlSession.update(statement, dto);
+	}
+	
+	//반환값이 없어서 void처리
+	public void goodsDel(String prodNum) {
+		statement = namespace +".goodsDel";
+		sqlSession.delete(statement, prodNum);
 	}
 	
 	

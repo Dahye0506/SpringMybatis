@@ -2,6 +2,11 @@
     pageEncoding="UTF-8" isELIgnored="false"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%
+	pageContext.setAttribute("cn", "\n");
+%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -28,9 +33,9 @@ ${test }<br />
 	<c:if test="${goodsCommand.recommend == 'Y'}">추천</c:if> 
 	<c:if test="${goodsCommand.recommend == 'N'}">비 추천</c:if> 
 	<br />
-상세 정보 ${goodsCommand.prodDetail }<br />
+상세 정보 ${fn:replace(goodsCommand.prodDetail, cn, "<br/>" ) }<br />
 <c:forTokens items="${goodsCommand.prodImage }" delims="," var="prodImage">
-	<img src="../goods/upload/${prodImage }" /><br />
+	<img src="../goods/upload/${prodImage }" width="400" height="400"/><br />
 </c:forTokens>
 
 </body>

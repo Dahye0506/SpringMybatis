@@ -11,7 +11,7 @@ public class MemberRepository {//컨텍스트에등록
 	@Autowired
 	SqlSession sqlSession;
 	
-	String namespace ="mapper.memberMapper"; //네임스페이스이름과 마이바티스 매퍼이름은 같지않아도 됨
+	String namespace ="mappers.memberMapper"; //네임스페이스이름과 마이바티스 매퍼이름은 같지않아도 됨
 	String statement; //
 	
 

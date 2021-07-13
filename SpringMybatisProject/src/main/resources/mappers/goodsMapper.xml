@@ -8,28 +8,31 @@
 <resultMap type="Model.GoodsDTO" id="baseResult">
 	<id column="PROD_NUM" jdbcType="BIGINT" property="prodNum"/>
 	<result column="PROD_NAME" jdbcType="VARCHAR" property="prodName"/>
-	<result column="PROD_PRICE" javaType="BIGINT" property="prodPrice" />
-	<result column="PROD_IMAGE" javaType="VARCHAR" property="prodImage" />
-	<result column="PROD_DETAIL" javaType="VARCHAR" property="prodDetail" />
-	<result column="PROD_CAPACITY" javaType="BIGINT" property="prodCapacity" />
-	<result column="PROD_SUPPLYER" javaType="VARCHAR" property="prodSupplyer" />
-	<result column="PROD_DEL_FEE" javaType="BIGINT" property="prodDelFee" />
-	<result column="RECOMMEND" javaType="VARCHAR" property="recommend" />
-	<result column="EMPLOYEE_ID" javaType="VARCHAR" property="employeeId" />
-	<result column="CTGR" javaType="VARCHAR" property="ctgr" />
+	<result column="PROD_PRICE" jdbcType="BIGINT" property="prodPrice" />
+	<result column="PROD_IMAGE" jdbcType="VARCHAR" property="prodImage" />
+	<result column="PROD_DETAIL" jdbcType="VARCHAR" property="prodDetail" />
+	<result column="PROD_CAPACITY" jdbcType="BIGINT" property="prodCapacity" />
+	<result column="PROD_SUPPLYER" jdbcType="VARCHAR" property="prodSupplyer" />
+	<result column="PROD_DEL_FEE" jdbcType="BIGINT" property="prodDelFee" />
+	<result column="RECOMMEND" jdbcType="VARCHAR" property="recommend" />
+	<result column="EMPLOYEE_ID" jdbcType="VARCHAR" property="employeeId" />
+	<result column="CTGR" jdbcType="VARCHAR" property="ctgr" />
 </resultMap>
 
 <select id="goodsNum" resultType="string">
 	select PROD_SEQ.nextval from dual
 </select>
 
-<insert id="goodsWrite" parameterType="Model.GoodsDTO" >
-	insert into products(PROD_NUM, PROD_NAME, PROD_PRICE,
-		PROD_DETAIL, PROD_CAPACITY, PROD_SUPPLYER, PROD_DEL_FEE,
-		RECOMMEND, EMPLOYEE_ID, CTGR, PROD_IMAGE)
-	values (#{prodNum},#{prodName},#{prodPrice},
-			#{prodDetail},#{prodCapacity},#{prodSupplyer},#{prodDelFee},
-			#{recommend},#{employeeId},#{ctgr},#{prodImage})
+<insert id="goodsInsert" parameterType="Model.GoodsDTO">
+	insert into products(PROD_NUM, PROD_NAME, PROD_PRICE, PROD_DETAIL,
+	PROD_CAPACITY, PROD_SUPPLYER, PROD_DEL_FEE, RECOMMEND, 
+	EMPLOYEE_ID, CTGR, PROD_IMAGE)
+	values(#{prodNum},#{prodName},#{prodPrice},#{prodDetail},
+	#{prodCapacity},#{prodSupplyer},#{prodDelFee},#{recommend},
+	#{employeeId},#{ctgr},
+	<if test="prodImage != null">#{prodImage}</if>
+	<if test="prodImage == null">null</if>
+	)
 </insert>
 
 
@@ -52,6 +55,23 @@
 	from products
 	where PROD_NUM = #{prodNum}
 </select>
+
+
+<update id="goodsUpdate" parameterType="Model.GoodsDTO">
+	update products
+	set PROD_PRICE = #{prodPrice}, PROD_DETAIL = #{prodDetail},
+		PROD_CAPACITY = #{prodCapacity},PROD_SUPPLYER = #{prodSupplyer},
+		PROD_DEL_FEE = #{prodDelFee}, RECOMMEND =#{recommend},
+		CTGR = #{ctgr}, PROD_IMAGE = #{prodImage}
+	where PROD_NUM = #{prodNum}
+</update>
+
+
+<!-- 상품 삭제 -->
+<delete id="goodsDel" parameterType="string">
+	delete from products
+	where prod_num = #{prodNum}
+</delete>
 
 
 

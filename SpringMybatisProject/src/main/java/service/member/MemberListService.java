@@ -12,9 +12,9 @@ public class MemberListService {
 	//jsp페이지에 전달
 	@Autowired
 	MemberRepository memberRepository; //받아오기 
-	public void memList(Model model, String memId) {
+	public void memList(Model model,String memId) {
 		List<MemberDTO> list = memberRepository.memList(memId);
-		model.addAttribute("lists",list);
+		model.addAttribute("lists", list);
 	}
 
 }
