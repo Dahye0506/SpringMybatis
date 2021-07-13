@@ -98,4 +98,5 @@ public class MemberMyPageController {
 		return "member/memSujung";
 	}
 	
+	
 }

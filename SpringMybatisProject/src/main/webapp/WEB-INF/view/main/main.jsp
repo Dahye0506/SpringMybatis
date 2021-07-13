@@ -12,8 +12,7 @@
 <body>
 <!-- 로그인 안된 경우 -->
 <c:if test="${empty authInfo }">
-<form:form action="login" method="post" name="frm" 
-	modelAttribute="logInCommand">
+<form:form action="login" method="post" name="frm" modelAttribute="logInCommand">
 <table>
 	<tr><td colspan="3">아이디저장 | 자동로그인</td></tr>
 	<tr><td>아이디</td>
@@ -43,7 +42,7 @@
 	</c:if>
 	<c:if test="${authInfo.grade != 1 }">
 	<!-- 관리자 -->
-	<a href="employee/mapage">마이페이지</a>
+	<a href="empEdit/empMypage">마이페이지</a>
 	<a href="member/memList" >회원리스트</a>
 	<a href="emp/empList">직원 리스트</a>
 	<a href="goods/goodsList">상품리스트</a>

@@ -35,6 +35,7 @@ public class EmployeeController {
 	EmployeeUpdateService employeeUpdateService;
 	@Autowired
 	EmployeeDeleteService employeeDeleteService;
+		
 	@RequestMapping("empDelete")
 	public String empDelete(
 			@RequestParam(value = "empId") String empId) {
@@ -90,4 +91,9 @@ public class EmployeeController {
 		employeeJoinService.empInsert(employeeCommand);
 		return "redirect:empList";
 	}
+	
+	
+	
+	
+	
 }

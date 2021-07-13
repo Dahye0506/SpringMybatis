@@ -14,4 +14,6 @@
 	<bean id="employeeInfoService" class="service.employee.EmployeeInfoService"/>
 	<bean id="employeeUpdateService" class="service.employee.EmployeeUpdateService"/>
 	<bean id="employeeDeleteService" class="service.employee.EmployeeDeleteService"/>
+	
+	<bean class="controller.employee.EmployeeMypageController" />
 </beans>

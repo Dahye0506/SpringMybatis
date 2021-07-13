@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8" isELIgnored="false" %>
+    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -18,5 +20,10 @@
 주소 : ${emp.empAddress }<br />
 <a href="empModify?empId=${emp.employeeId }">수정</a> | 
 <a href="empList.em" >리스트로 가기</a>  
+
+<a href="memDetail" >회원정보</a> | 
+<a href="memPwChange">비밀번호 변경</a> | 
+<a href="memOut">회원탈퇴</a>
+
 </body>
 </html>
