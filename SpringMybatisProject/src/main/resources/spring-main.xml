@@ -11,6 +11,5 @@
 	<bean id = "loginService" class="service.main.LoginService"/>
 	<bean id = "logInRepository" class="repository.LogInRepository"/>
 	
-	<bean id="mailService" class="controller.MailService" />
-	
+	<bean class="controller.ajax.AjaxController"/>
 </beans>

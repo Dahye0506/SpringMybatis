@@ -7,7 +7,7 @@
 <select id="logIn" parameterType="string" resultType="Model.AuthInfoDTO">
 	select MEM_ID userId, MEM_PW userPw , MEM_EMAIL userEmail, 1 grade
 	from member
-	where MEM_ID = #{userId} and ckok is not null
+	where MEM_ID = #{userId}
 	union
 	select EMP_USERID, EMP_PW, EMAIL, EMPLOYEE_ID
 	from employees
@@ -16,4 +16,5 @@
 
 
 </mapper>
+<!-- 10번째줄 마지막에 and ckok is not null 넣으면 이메일 체크 안된사람은 로그인 할 수없게 함-->
 <!-- 위 셀렉트 절 헤딩네임은 아레 셀렉트 헤딩네임에 따른다, 데이터 타입만 같으면 아레 헤딩네임 붙일필요없다.  -->

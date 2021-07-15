@@ -16,7 +16,7 @@ public class MailService {
 		msg.setHeader("content-type", "text/html; charset=UTF-8");//보낼형식 = text/html형식
 		msg.setContent(content, "text/html; charset=UTF-8");//컨텐트 형식 = text/html형식
 		msg.setSubject(subject);//제목
-		msg.setRecipient(MimeMessage.RecipientType.TO , new InternetAddress(reciver));//받는사람 이메일주소
+		msg.setRecipient(MimeMessage.RecipientType.TO , new InternetAddress(reciver));//받는사람메일주소
 		mailSender.send(msg);
 	}
 }

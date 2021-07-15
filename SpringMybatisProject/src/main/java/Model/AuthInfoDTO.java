@@ -5,6 +5,7 @@ public class AuthInfoDTO {
 	String userEmail;
 	String grade;
 	String userPw;
+	
 	public String getUserId() {
 		return userId;
 	}

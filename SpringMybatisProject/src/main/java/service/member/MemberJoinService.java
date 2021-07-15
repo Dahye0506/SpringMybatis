@@ -13,12 +13,12 @@ import repository.MemberRepository;
 
 public class MemberJoinService {
 	@Autowired
-	MailService mailService;//메일받아오기
-	
+	MailService mailService;
 	@Autowired
 	MemberRepository memberRepository;
 	@Autowired
 	BCryptPasswordEncoder bcryptPasswordEncoder;
+	
 	public void memJoin(MemberCommand memberCommand) {
 		MemberDTO dto = new MemberDTO();
 		dto.setDetailAdd(memberCommand.getDetailAdd());

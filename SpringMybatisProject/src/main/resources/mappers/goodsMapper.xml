@@ -1,26 +1,97 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-  
 <mapper namespace="mappers.goodsMapper">
+<!-- association이 있는 map은 출력 결과를 하나만 반환한다. -->
+<!-- 두 테이블에 있는 값을 1 : 1로 가져올 때  association -->
+<resultMap type="Model.ProductCartDTO" id="productCartMap">
+	<association property="productDTO" javaType="Model.GoodsDTO">
+		<result column="PROD_SUPPLYER" jdbcType="VARCHAR" property="prodSupplyer"/>
+		<result column="PROD_DEL_FEE" jdbcType="BIGINT" property="prodDelFee"/>
+		<result column="PROD_IMAGE" jdbcType="VARCHAR" property="prodImage"/>
+		<result column="PROD_NAME" jdbcType="VARCHAR" property="prodName"/>
+		<result column="PROD_PRICE" jdbcType="BIGINT" property="prodPrice"/>
+	</association>
+	<association property="cartDTO" javaType="Model.CartDTO">
+		<id column="PROD_NUM" jdbcType="BIGINT" property="prodNum"/>
+		<id column="mem_id" jdbcType="VARCHAR" property="memId"/>
+		<result column="CART_PRICE" jdbcType="BIGINT" property="cartPrice"/>
+		<result column="CART_QTY" jdbcType="BIGINT" property="cartQty"/>
+	</association>
+</resultMap>
+<select id="cartList" parameterType="Model.CartDTO" resultMap="productCartMap">
+	select p.PROD_NUM , PROD_SUPPLYER, PROD_DEL_FEE,
+			PROD_IMAGE, PROD_NAME ,PROD_PRICE,
+			CART_PRICE, CART_QTY, mem_id
+	from  products p, cart c
+	where p.PROD_NUM = c.prod_num and c.mem_id = #{memId}
+	and p.PROD_NUM = #{prodNum}
+</select>
 
-<!-- result는 일반컬럼 -->
+<!-- 사용자가 저장한 cart에 있는 상품번호를 가져 옴 -->
+<select id="memProdNum" parameterType="string" resultType="string">
+	select prod_num from cart
+	where mem_id = #{memId}
+</select>
+
+<update id="goodsQtyDown" parameterType="Model.CartDTO">
+	update cart
+	set cart_qty = cart_qty - 1,
+		cart_price = cart_price - #{cartPrice}
+	where mem_id = #{memId} and prod_num = #{prodNum}
+</update>
+
+<insert id="cartAdd" parameterType="Model.CartDTO">
+	MERGE into cart c1
+	using (select prod_num from products where prod_num = #{prodNum}  ) p1
+	on (c1.prod_num = p1.prod_num and c1.mem_id = #{memId})
+	When MATCHED THEN
+		update set c1.cart_qty = cart_qty + #{cartQty},
+		           c1.cart_price = cart_price + #{cartPrice}
+	When not MATCHED THEN
+		insert (c1.mem_id, c1.prod_num, c1.cart_qty, c1.cart_price)
+		values(#{memId},#{prodNum},#{cartQty},#{cartPrice})
+</insert>
+<delete id="goodsDel" parameterType="string">
+	delete from products
+	where prod_num = #{prodNum}
+</delete>
+<update id="goodsUpdate" parameterType="Model.GoodsDTO">
+	update products
+	set PROD_PRICE = #{prodPrice}, PROD_DETAIL = #{prodDetail},
+		PROD_CAPACITY = #{prodCapacity},PROD_SUPPLYER=#{prodSupplyer},
+		PROD_DEL_FEE = #{prodDelFee}, RECOMMEND =#{recommend},
+		CTGR = #{ctgr}, PROD_IMAGE = #{prodImage}
+	where PROD_NUM = #{prodNum}
+</update>
+<select id="goodsNum" resultType="string">
+	select prod_seq.nextval from dual
+</select>
+<!-- id는 primary key -->
+<!-- result는 일반 컬럼 -->
 <resultMap type="Model.GoodsDTO" id="baseResult">
 	<id column="PROD_NUM" jdbcType="BIGINT" property="prodNum"/>
 	<result column="PROD_NAME" jdbcType="VARCHAR" property="prodName"/>
-	<result column="PROD_PRICE" jdbcType="BIGINT" property="prodPrice" />
-	<result column="PROD_IMAGE" jdbcType="VARCHAR" property="prodImage" />
-	<result column="PROD_DETAIL" jdbcType="VARCHAR" property="prodDetail" />
-	<result column="PROD_CAPACITY" jdbcType="BIGINT" property="prodCapacity" />
-	<result column="PROD_SUPPLYER" jdbcType="VARCHAR" property="prodSupplyer" />
-	<result column="PROD_DEL_FEE" jdbcType="BIGINT" property="prodDelFee" />
-	<result column="RECOMMEND" jdbcType="VARCHAR" property="recommend" />
-	<result column="EMPLOYEE_ID" jdbcType="VARCHAR" property="employeeId" />
-	<result column="CTGR" jdbcType="VARCHAR" property="ctgr" />
+	<result column="PROD_PRICE" jdbcType="BIGINT" property="prodPrice"/>
+	<result column="PROD_IMAGE" jdbcType="VARCHAR" property="prodImage"/>
+	<result column="PROD_DETAIL" jdbcType="VARCHAR" property="prodDetail"/>
+	<result column="PROD_CAPACITY" jdbcType="BIGINT" property="prodCapacity"/>
+	<result column="PROD_SUPPLYER" jdbcType="VARCHAR" property="prodSupplyer"/>
+	<result column="PROD_DEL_FEE" jdbcType="BIGINT" property="prodDelFee"/>
+	<result column="RECOMMEND" jdbcType="VARCHAR" property="recommend"/>	
+	<result column="employeeId" jdbcType="VARCHAR" property="employeeId"/>
+	<result column="CTGR" jdbcType="VARCHAR" property="ctgr"/>
 </resultMap>
-
-<select id="goodsNum" resultType="string">
-	select PROD_SEQ.nextval from dual
+<select id="goodsDetail" parameterType="string" 
+									resultMap="baseResult">
+	select PROD_NUM, PROD_NAME, 
+			PROD_PRICE, PROD_IMAGE,
+			PROD_DETAIL, PROD_CAPACITY,
+			PROD_SUPPLYER, PROD_DEL_FEE,
+			RECOMMEND , EMPLOYEE_ID,
+			CTGR
+	from products
+	where PROD_NUM = #{prodNum}
 </select>
 
 <insert id="goodsInsert" parameterType="Model.GoodsDTO">
@@ -34,45 +105,38 @@
 	<if test="prodImage == null">null</if>
 	)
 </insert>
-
-
-<select id="goodsList" resultType="gd">
+<select id="goodsList" resultType="Model.GoodsDTO">
 	select PROD_NUM prodNum, PROD_NAME prodName, PROD_PRICE prodPrice, 
-		PROD_IMAGE prodImage, PROD_DETAIL prodDetail, PROD_CAPACITY prodCapacity,
-		PROD_SUPPLYER prodSupplyer, PROD_DEL_FEE prodDelFee, RECOMMEND recommend,
-		EMPLOYEE_ID employeeId, CTGR ctgr
+			PROD_DETAIL prodDetail, PROD_CAPACITY prodCapacity, 
+			PROD_SUPPLYER prodSupplyer, PROD_DEL_FEE prodDelFee, 
+			RECOMMEND recommend, EMPLOYEE_ID employeeId, CTGR ctgr, 
+			PROD_IMAGE prodImage
 	from products
-
-</select>
-<!-- id 는 primary key -->
-
-
-<select id="goodsDetail" parameterType="string" resultMap="baseResult">
-	select PROD_NUM, PROD_NAME, PROD_PRICE, 
-		PROD_IMAGE, PROD_DETAIL, PROD_CAPACITY,
-		PROD_SUPPLYER, PROD_DEL_FEE, RECOMMEND,
-		EMPLOYEE_ID, CTGR
-	from products
-	where PROD_NUM = #{prodNum}
 </select>
 
+<!-- 카트 인서트 -->
+<insert id="purchaseInsert" parameterType="Model.PurchaseDTO">
+	insert into purchase(PURCHASE_NUM, MEM_ID, PURCHASE_TOT_PRICE, PURCHASE_ADDR, PURCHASE_METHOD,
+			PURCHASE_REQUEST, RECEIVER_NAME, RECEIVER_PHONE, PURCHASE_DATE)
+	
+	values(#{purchaseNum},#{memId},#{purchaseTotPrice},#{purchaseAddr},#{purchaseMethod},#{purchaseRequest},#{ReceiverName},#{ReceiverPhone},sysdate)
+</insert>
+<!-- 																												구매일은 받아오지 않기때문에 sysdate 사용 -->
 
-<update id="goodsUpdate" parameterType="Model.GoodsDTO">
-	update products
-	set PROD_PRICE = #{prodPrice}, PROD_DETAIL = #{prodDetail},
-		PROD_CAPACITY = #{prodCapacity},PROD_SUPPLYER = #{prodSupplyer},
-		PROD_DEL_FEE = #{prodDelFee}, RECOMMEND =#{recommend},
-		CTGR = #{ctgr}, PROD_IMAGE = #{prodImage}
-	where PROD_NUM = #{prodNum}
-</update>
+
+<insert id="purchseListInsert" parameterType="Model.CartDTO">
+	insert into purchase_List(PURCHASE_NUM, PROD_NUM, PURCHASE_QTY, PURCHASE_PRICE )
+	select #{purchaseNum}, PROD_NUM, CART_QTY, CART_PRICE
+	from cart
+	where mem_id = #{memId} and prod_num = #{prodNum}
+</insert>
 
 
-<!-- 상품 삭제 -->
-<delete id="goodsDel" parameterType="string">
-	delete from products
-	where prod_num = #{prodNum}
+<!-- 장바구니 상품 삭제 -->
+<delete id="cartDelete" parameterType="Model.CartDTO">
+	delete from cart
+	where mem_id = #{memId} and prod_num = #{prodNum}
 </delete>
-
 
 
 </mapper>
