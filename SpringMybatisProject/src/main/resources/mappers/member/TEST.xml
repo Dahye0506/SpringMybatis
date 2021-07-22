@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mappers.memberMapper">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<select id="memList" resultType="Model.MemberDTO" parameterType="Model.MemberDTO">
+select rn, memId, memPw, memAddress, memName, memPhone, memBirth, memGender,
+        memAccount, memEmail, memEmailCk, postNumber, detailAdd
+from(
+	select rownum rn, MEM_ID memId,MEM_PW memPw,MEM_ADDRESS memAddress, MEM_NAME memName,
+	 	   MEM_PHONE memPhone, MEM_BIRTH memBirth, MEM_GENDER memGender, 
+	 	   MEM_ACCOUNT memAccount, MEM_EMAIL memEmail, MEM_EMAIL_CK memEmailCk,
+		   POST_NUMBER postNumber, DETAIL_ADD detailAdd
+	from member
+)
+	<trim prefix="where" prefixOverrides="AND | OR">
+		<if test="memId != null">
+			memId = #{memId}
+		</if>
+		<if test="startEndPageDTO != null">
+			and rn between #{startEndPageDTO.startRow} 
+			and  #{startEndPageDTO.endRow} 
+		</if>
+	</trim>
+</select>
+
+</mapper>

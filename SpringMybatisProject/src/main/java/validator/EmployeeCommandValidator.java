@@ -17,7 +17,7 @@ public class EmployeeCommandValidator implements Validator{
 		EmployeeCommand employeeCommand = (EmployeeCommand)target;
 
 		//패스워드가 일치하는지
-		if(!employeeCommand.isEmpPwEqualsempPwCon()) {
+		if(!employeeCommand.isEmpPwEqualsEmpPwCon()) {
 			//비밀번호가 일치하지 않는다면 에러메세지 생성
 			errors.rejectValue("empPwCon", "nomatch");
 			

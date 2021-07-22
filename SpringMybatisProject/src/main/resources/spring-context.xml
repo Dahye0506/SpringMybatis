@@ -21,30 +21,60 @@
 		<mvc:jsp prefix="/WEB-INF/view/"/>
 		<mvc:jsp suffix=".jsp"/>
 	</mvc:view-resolvers>
-	<!-- prefix 경로 지정/이미지 불러오기 -->	
-	<mvc:resources location="/WEB-INF/view/" mapping="/**" cache-period="14400"></mvc:resources>
-	
+	<!-- prefix 경로 지정-->
+	<mvc:resources location="/WEB-INF/view/" mapping="/**" 
+		cache-period="14400" />
 	<!-- password암호화 -->
 	<bean id = "bcryptPasswordEncoder" 
 	class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder">
 		<constructor-arg value="10"/>
 	</bean>
-	
 	<!-- 파일 업로드 -->
 	<bean id="multipartResolver" 
 		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
 		 <property name="maxUploadSize" value="100000000"/>
 		 <property name="maxInMemorySize" value="100000000"/>
 	</bean>
-	<bean id="messageSource" class = "org.springframework.context.support.ResourceBundleMessageSource">
-         <property name="basenames">
-            <list>
-               <value>messege.error</value>
-               		<!-- 폴더명.파일명 -->
-               <!-- class 안에있는 소스가 massege폴더안에있는 error.properties소스를 읽어-->
-               
-            </list>
+	
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/edit/**"/>
+			<bean class="interceptor.AuthCheckInterceptor"/>
+		</mvc:interceptor>
+		<mvc:interceptor>
+			<mvc:mapping path="/cart/**"/>
+			<bean class="interceptor.AuthCheckInterceptor"/>
+		</mvc:interceptor>
+		<mvc:interceptor>
+			<mvc:mapping path="/employee/**"/>
+			<bean class="interceptor.AuthCheckInterceptor"/>
+		</mvc:interceptor>
+		<mvc:interceptor>
+			<mvc:mapping path="/member/**"/>
+			<bean class="interceptor.AuthCheckInterceptor"/>
+		</mvc:interceptor>
+		<mvc:interceptor>
+			<mvc:mapping path="/emp/**"/>
+			<bean class="interceptor.AuthCheckInterceptor"/>
+		</mvc:interceptor>
+		<mvc:interceptor>
+			<mvc:mapping path="/goods/**"/>
+			<bean class="interceptor.AuthCheckInterceptor"/>
+		</mvc:interceptor>
+		<mvc:interceptor>
+			<mvc:mapping path="/admin/**"/>
+			<bean class="interceptor.AuthCheckInterceptor"/>
+		</mvc:interceptor>
+	</mvc:interceptors>
+	
+	
+	<bean id="messageSource" 
+		class = "org.springframework.context.support.ResourceBundleMessageSource">
+			<property name="basenames">
+				<list>
+					<value>message.error</value>
+				</list>
 			</property>
-		<property name="defaultEncoding" value="UTF-8" />
+			<property name="defaultEncoding" value="UTF-8" />
 	</bean>
 </beans>

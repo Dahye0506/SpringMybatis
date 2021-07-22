@@ -2,6 +2,107 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="mappers.goodsMapper">
+
+<delete id="cartRemove" parameterType="hashMap">
+	delete from cart
+	<where>
+		<if test="prodNums != null">
+			mem_id = #{memId} and prod_num in 
+			<foreach collection="prodNums" item="prodNum" index="index" 
+				open="(" close=")" separator=",">
+				#{prodNum}
+			</foreach>
+		</if>
+	</where>
+</delete>
+
+<delete id="cartProdDel" parameterType="Model.CartDTO"> 
+	delete from cart
+	where mem_id = #{memId} and prod_num = #{prodNum}
+</delete>
+<resultMap type="Model.GoodsReviewsDTO" id="goodsReviewsMap">
+	<association property="goods" javaType="Model.GoodsDTO">
+		<id column="PROD_NUM" jdbcType="BIGINT" property="prodNum" />
+		<result column="PROD_NAME" jdbcType="VARCHAR" property="prodName" />
+		<result column="PROD_PRICE" jdbcType="BIGINT" property="prodPrice" />
+		<result column="PROD_IMAGE" jdbcType="VARCHAR" property="prodImage" />
+		<result column="PROD_DETAIL" jdbcType="VARCHAR" property="prodDetail" />
+		<result column="PROD_CAPACITY" jdbcType="BIGINT" property="prodCapacity" />
+		<result column="PROD_SUPPLYER" jdbcType="VARCHAR" property="prodSupplyer" />
+		<result column="PROD_Del_Fee" jdbcType="BIGINT" property="prodDelFee" />
+		<result column="RECOMMEND" jdbcType="VARCHAR" property="recommend" />
+		<result column="EMPLOYEE_ID" jdbcType="BIGINT" property="employeeId" />
+		<result column="CTGR" jdbcType="VARCHAR" property="ctgr" />
+	</association>
+	<collection property="reviews" ofType="Model.ReviewDTO">
+		<id column="PURCHASE_NUM" jdbcType="BIGINT" property="purchaseNum"/>
+		<id column="PROD_NUM" jdbcType="BIGINT" property="prodNum"/>
+		<result column="REVIEW_DATE" jdbcType="DATE" property="reviewDate"/>
+		<result column="REVIEW_CONTENT" jdbcType="VARCHAR" property="reviewContent"/>
+		<result column="REVIEW_IMG" jdbcType="VARCHAR" property="reviewImg"/>
+	</collection>
+</resultMap>
+<select id="goodsReviews" parameterType="string" resultMap="goodsReviewsMap">
+select P.PROD_NUM, PROD_NAME, PROD_PRICE, PROD_IMAGE, PROD_DETAIL, PROD_CAPACITY,
+			PROD_SUPPLYER,prod_Del_Fee, RECOMMEND , EMPLOYEE_ID, CTGR, 
+			PURCHASE_NUM , REVIEW_DATE, REVIEW_CONTENT, REVIEW_IMG
+from products P , review R
+WHERE P.PROD_NUM = R.PROD_NUM(+) AND P.PROD_NUM = #{prodNum}
+</select>
+<update id="reviewUpdate" parameterType="Model.ReviewDTO">
+	update review
+	set review_content = #{reviewContent}
+	where PURCHASE_NUM = #{purchaseNum} and PROD_NUM = #{prodNum}
+</update>
+
+
+<select id="reviewInfo" parameterType="Model.ReviewDTO" 
+							resultType="Model.ReviewDTO">
+	select PURCHASE_NUM purchaseNum, PROD_NUM prodNum, 
+			REVIEW_DATE reviewDate, REVIEW_CONTENT reviewContent,
+			REVIEW_IMG reviewImg
+	from review
+	where PURCHASE_NUM = #{purchaseNum} and PROD_NUM = #{prodNum}
+</select>
+
+
+<insert id="reviewWrite" parameterType="Model.ReviewDTO">
+	insert into review (PURCHASE_NUM,PROD_NUM,REVIEW_DATE,REVIEW_CONTENT,
+						REVIEW_IMG)
+	values(#{purchaseNum},#{prodNum},sysdate,#{reviewContent},
+	<if test="reviewImg != null">#{reviewImg}</if>
+	<if test="reviewImg == null">null</if>)
+</insert>
+
+<sql id="PAYMENTAPPRNUM">
+select to_char(sysdate,'yyyymmdd') || 
+       nvl2(max(PAYMENT_APPR_NUM),substr(max(PAYMENT_APPR_NUM),-6),100000) + 1  
+from payment 
+where substr(PAYMENT_APPR_NUM, 1, 8) = to_char(sysdate,'yyyymmdd')
+</sql>
+<insert id="payment" parameterType="Model.PaymentDTO">
+insert into payment (PURCHASE_NUM,MEM_ID,PAYMENT_METHOD, PAYMENT_APPR_PRICE,
+					PAYMENT_APPR_NUM,PAYMENT_APPR_DATE, PAYMENT_NUMBER )
+values ( #{purchaseNum},#{memId},#{paymentMethod},#{paymentApprPrice},
+		(<include refid="PAYMENTAPPRNUM" />), sysdate, #{paymentNumber})
+</insert>
+
+<select id="baseOrderList" parameterType="string" resultType="Model.OrderListDTO">
+select  p1.prod_num prodNum , PROD_SUPPLYER prodSupplyer, prod_name prodName, 
+		prod_image prodImage, 
+ 		PURCHASE_DATE purchaseDate, p2.PURCHASE_NUM purchaseNum, 
+ 		PURCHASE_TOT_PRICE purchaseTotPrice,
+ 		review_content reviewContent, 
+ 		PAYMENT_APPR_NUM paymentApprNum
+from products p1,  purchase_list p2, purchase p3, payment p4, review r
+where p1.prod_num = p2.prod_num
+and   p2.PURCHASE_NUM = p3.PURCHASE_NUM
+and   p2.PURCHASE_NUM = p4.PURCHASE_NUM(+)
+and   p2.PURCHASE_NUM = r.PURCHASE_NUM(+)
+and   p2.prod_num = r.prod_num(+)
+and   p3.mem_id = #{memId}
+order by purchaseNum desc
+</select>
 <!-- association이 있는 map은 출력 결과를 하나만 반환한다. -->
 <!-- 두 테이블에 있는 값을 1 : 1로 가져올 때  association -->
 <resultMap type="Model.ProductCartDTO" id="productCartMap">
@@ -33,6 +134,27 @@
 	select prod_num from cart
 	where mem_id = #{memId}
 </select>
+
+<insert id="purchaseInsert" parameterType="Model.PurchaseDTO">
+	insert into purchase(PURCHASE_NUM, MEM_ID, PURCHASE_TOT_PRICE,PURCHASE_ADDR,
+	PURCHASE_METHOD, PURCAHSE_REQUEST, RECEIVER_NAME, RECEIVER_PHONE,
+	PURCHASE_DATE)
+	values(#{purchaseNum},#{memId},#{purchaseTotPrice},#{purchaseAddr},
+	#{purchaseMethod},#{purchaseRequest},#{receiverName},#{receiverPhone},
+	sysdate)
+</insert>
+
+<insert id="purchaseListInsert" parameterType="Model.CartDTO"> 
+	insert into purchase_List(PURCHASE_NUM, PROD_NUM, PURCHASE_QTY, PURCHASE_PRICE)
+	select #{purchaseNum} , PROD_NUM, CART_QTY, CART_PRICE
+	from cart
+	where mem_id = #{memId} and prod_num = #{prodNum}
+</insert>
+
+<delete id="cartDelete"  parameterType="Model.CartDTO">
+	delete from cart
+	where mem_id = #{memId} and prod_num = #{prodNum}
+</delete>
 
 <update id="goodsQtyDown" parameterType="Model.CartDTO">
 	update cart
@@ -105,38 +227,31 @@
 	<if test="prodImage == null">null</if>
 	)
 </insert>
-<select id="goodsList" resultType="Model.GoodsDTO">
-	select PROD_NUM prodNum, PROD_NAME prodName, PROD_PRICE prodPrice, 
+<select id="goodsList" resultType="Model.GoodsDTO" 
+	parameterType="Model.GoodsDTO">
+select rn, prodNum, prodName, prodPrice,prodDetail, prodCapacity,
+		prodSupplyer, prodDelFee, recommend, employeeId, ctgr,
+		prodImage
+from (select rownum rn, PROD_NUM prodNum, PROD_NAME prodName, PROD_PRICE prodPrice, 
 			PROD_DETAIL prodDetail, PROD_CAPACITY prodCapacity, 
 			PROD_SUPPLYER prodSupplyer, PROD_DEL_FEE prodDelFee, 
 			RECOMMEND recommend, EMPLOYEE_ID employeeId, CTGR ctgr, 
 			PROD_IMAGE prodImage
-	from products
+	from products)
+<where>
+	<if test="startEndPageDTO != null">
+		rn between #{startEndPageDTO.startRow} 
+     		and #{startEndPageDTO.endRow}
+	</if>
+</where>
+</select>
+<select id = "count" resultType="int" >
+	select count(*) from products
 </select>
 
-<!-- 카트 인서트 -->
-<insert id="purchaseInsert" parameterType="Model.PurchaseDTO">
-	insert into purchase(PURCHASE_NUM, MEM_ID, PURCHASE_TOT_PRICE, PURCHASE_ADDR, PURCHASE_METHOD,
-			PURCHASE_REQUEST, RECEIVER_NAME, RECEIVER_PHONE, PURCHASE_DATE)
-	
-	values(#{purchaseNum},#{memId},#{purchaseTotPrice},#{purchaseAddr},#{purchaseMethod},#{purchaseRequest},#{ReceiverName},#{ReceiverPhone},sysdate)
-</insert>
-<!-- 																												구매일은 받아오지 않기때문에 sysdate 사용 -->
 
 
-<insert id="purchseListInsert" parameterType="Model.CartDTO">
-	insert into purchase_List(PURCHASE_NUM, PROD_NUM, PURCHASE_QTY, PURCHASE_PRICE )
-	select #{purchaseNum}, PROD_NUM, CART_QTY, CART_PRICE
-	from cart
-	where mem_id = #{memId} and prod_num = #{prodNum}
-</insert>
 
-
-<!-- 장바구니 상품 삭제 -->
-<delete id="cartDelete" parameterType="Model.CartDTO">
-	delete from cart
-	where mem_id = #{memId} and prod_num = #{prodNum}
-</delete>
 
 
 </mapper>

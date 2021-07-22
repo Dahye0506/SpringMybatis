@@ -6,11 +6,11 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 public class EmployeeCommand {
 	String employeeId;
-	String empUserid;
+	String empUserId;
 	String empPw;
 	String empPwCon;
 	String empName;
-	@DateTimeFormat(pattern="yyyy-MM-dd")//mm소문자는 분으로 인식!! 그래서 대문자 MM사용
+	@DateTimeFormat(pattern = "yyyy-MM-dd")	
 	Date hireDate;
 	String jobId;
 	String phNumber;
@@ -18,23 +18,29 @@ public class EmployeeCommand {
 	String email;
 	String empAddress;
 	
-	//서버에서 일치하느지 아닌지 확인하기 위함
-	//비밀번호 같은지 확인
-	public boolean isEmpPwEqualsempPwCon() {
-		return empPw.equals(empPwCon);
+	String oldPw;	
+	public String getOldPw() {
+		return oldPw;
+	}
+	public void setOldPw(String oldPw) {
+		this.oldPw = oldPw;
 	}
 	
+	
+	public boolean isEmpPwEqualsEmpPwCon() {
+		return empPw.equals(empPwCon);
+	}
 	public String getEmployeeId() {
 		return employeeId;
 	}
 	public void setEmployeeId(String employeeId) {
 		this.employeeId = employeeId;
 	}
-	public String getEmpUserid() {
-		return empUserid;
+	public String getEmpUserId() {
+		return empUserId;
 	}
-	public void setEmpUserid(String empUserid) {
-		this.empUserid = empUserid;
+	public void setEmpUserId(String empUserId) {
+		this.empUserId = empUserId;
 	}
 	public String getEmpPw() {
 		return empPw;
@@ -45,7 +51,6 @@ public class EmployeeCommand {
 	public String getEmpPwCon() {
 		return empPwCon;
 	}
-
 	public void setEmpPwCon(String empPwCon) {
 		this.empPwCon = empPwCon;
 	}
@@ -91,7 +96,4 @@ public class EmployeeCommand {
 	public void setEmpAddress(String empAddress) {
 		this.empAddress = empAddress;
 	}
-	
-	
-
 }

@@ -18,13 +18,11 @@ import service.member.MemberEmailCkService;
 import service.member.MemberJoinService;
 import validator.MemberCommandValidator;
 
-
 @Controller
 @RequestMapping("register")
 public class MemberController {
 	@Autowired
 	MemberEmailCkService memberEmailCkService;
-	//메일
 	@RequestMapping("memberMail")
 	public String memberMail(@RequestParam(value="num")String num,
 			@RequestParam(value="reciver") String reciver) {
@@ -35,12 +33,10 @@ public class MemberController {
 			return "member/fail";
 		}
 	}
-	
 	@RequestMapping("agree")
 	public String agree() {
 		return "member/agree";
 	}
-	
 	@RequestMapping(value="memRegist", method = RequestMethod.POST)
 	public String  memRegist(
 			@RequestParam(value="agree", defaultValue = "false")
@@ -53,14 +49,13 @@ public class MemberController {
 		}
 		return "member/memberForm";
 	}
-	
 	@Autowired
 	MemberJoinService memberJoinService;
 	@Autowired
 	LoginService loginService;
 	@RequestMapping(value="memJoin",method = RequestMethod.POST )
 	public String memJoin(MemberCommand memberCommand,Errors errors) {
-		new MemberCommandValidator().validate(memberCommand, errors);//에러가 생성 되었다면
+		new MemberCommandValidator().validate(memberCommand, errors);
 		if(errors.hasErrors()) {
 			return "member/memberForm";
 		}

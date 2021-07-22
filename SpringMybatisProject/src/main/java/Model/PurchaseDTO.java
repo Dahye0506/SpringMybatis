@@ -13,8 +13,6 @@ public class PurchaseDTO {
 	String receiverPhone;
 	Date purchaseDate;
 	
-	
-	
 	public String getPurchaseNum() {
 		return purchaseNum;
 	}

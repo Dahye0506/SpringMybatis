@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8" isELIgnored="false"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri = "http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -19,6 +19,9 @@
 		<td>${dto.memPhone }</td><td>${dto.memEmail }</td>
 		<td>${dto.memAddress } ${dto.detailAdd }</td></tr>
 	</c:forEach>
+	<tr><td colspan="5">
+		<%@ include file="../include/includePage.jsp" %>
+	</td></tr>
 </table>
 </body>
 </html>

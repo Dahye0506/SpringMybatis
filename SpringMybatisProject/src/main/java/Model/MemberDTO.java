@@ -18,7 +18,17 @@ public class MemberDTO {
 	String postNumber;
 	String detailAdd;
 	
-	String ckOk;	
+	String ckOk;
+	
+	StartEndPageDTO startEndPageDTO;
+	public StartEndPageDTO getStartEndPageDTO() {
+		return startEndPageDTO;
+	}
+	public void setStartEndPageDTO(StartEndPageDTO startEndPageDTO){
+		this.startEndPageDTO = startEndPageDTO;
+	}
+
+	
 	public String getCkOk() {
 		return ckOk;
 	}
@@ -98,6 +108,4 @@ public class MemberDTO {
 	public void setDetailAdd(String detailAdd) {
 		this.detailAdd = detailAdd;
 	}
-
-	
 }

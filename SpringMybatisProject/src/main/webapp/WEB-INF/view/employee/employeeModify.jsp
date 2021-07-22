@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8" isELIgnored="false"%>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -19,7 +19,8 @@
 	<tr><td>이름</td>
 		<td>${emp.empName}</td></tr>
 	<tr><td>입사일</td>
-		<td><fmt:formatDate value="${emp.hireDate}"  type="date" pattern="yyyy-MM-dd" /></td></tr>
+		<td><fmt:formatDate value="${emp.hireDate}" type="date" 
+		pattern="yyyy-MM-dd"/> </td></tr>
 	<tr><td>직무</td>
 		<td>
 		<input type="text" name="jobId" value="${emp.jobId }"/></td></tr>
@@ -46,7 +47,6 @@
 			<input type="submit" value="직원정보 수정" />
 			<input type="button" value="직원 삭제" 
 			onclick="javascript:location.href='empDelete?empId=${emp.employeeId }'"/>
-			<!-- 컨트롤러에ㅓ empDelete가기 -->
 		</td></tr>
 </table>
 </form>

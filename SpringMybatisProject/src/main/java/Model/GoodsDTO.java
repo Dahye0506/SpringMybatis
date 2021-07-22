@@ -15,7 +15,13 @@ public class GoodsDTO {//값을 db테이블로 전달하는 애 = db테이블에
 	String employeeId;
 	String ctgr;
 	
-	
+	StartEndPageDTO startEndPageDTO;
+	public StartEndPageDTO getStartEndPageDTO() {
+		return startEndPageDTO;
+	}
+	public void setStartEndPageDTO(StartEndPageDTO startEndPageDTO) {
+		this.startEndPageDTO = startEndPageDTO;
+	}
 	
 	public Long getProdNum() {
 		return prodNum;

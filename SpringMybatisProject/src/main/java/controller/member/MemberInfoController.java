@@ -59,9 +59,11 @@ public class MemberInfoController {
 	
 		
 	@RequestMapping("memList")
-	public String memList(Model model) {
-		memberListService.memList(model,null);
-		return "member/memberList"; //멤버리스트 가져오기
+	public String memList(
+			@RequestParam(value="page" ,defaultValue = "1") Integer page, 
+			Model model) {
+		memberListService.memList(model,null,page);
+		return "member/memberList";//멤버리스트가져오기
 	}
 	
 	
@@ -69,7 +71,7 @@ public class MemberInfoController {
 	public String memInfo(
 			@PathVariable(value = "memId") String memId, Model model) { //모델에 담아서 받아오기
 			//{memId} 안에 있는 값을 String memId로 받아오겠다.
-		memberListService.memList(model,memId);
+		memberListService.memList(model,memId, 1);
 		return "member/memberInfo";
 	}
 	
@@ -78,7 +80,7 @@ public class MemberInfoController {
 	public String memMod(
 			@PathVariable(value = "memId") String memId, Model model) { //모델에 담아서 받아오기
 			//{memId} 안에 있는 값을 String memId로 받아오겠다.
-		memberListService.memList(model, memId);
+		memberListService.memList(model,memId, 1);
 		return "member/memberModify";
 	}
 	

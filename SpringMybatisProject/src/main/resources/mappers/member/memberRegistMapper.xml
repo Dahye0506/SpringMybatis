@@ -5,6 +5,15 @@
 <!-- 멤버리포시토리 네임스페이스이름과 같아야한다. -->
 
 <!-- MemberRepository 있는  statment와 같아야함 -->
+
+<select id="idFind" parameterType="Model.MemberDTO" 
+	resultType="string">
+select rpad(substr(MEM_ID,1, 4), length(mem_id), '*') from member
+where mem_phone = #{memPhone} and MEM_EMAIL = #{memEmail} 
+and mem_name = #{memName} 
+
+</select>
+
 	
 <!-- 멤버이메일 업데이트 -->
 <update id="updateCkOk" parameterType="Model.MemberDTO">
@@ -64,18 +73,30 @@
 	#{postNumber},#{detailAdd})
 </insert>
 
-<select id="memList" resultType="Model.MemberDTO" parameterType="string">
-	select MEM_ID memId,MEM_PW memPw, MEM_ADDRESS memAddress, MEM_NAME memName,
+<select id="memList" resultType="Model.MemberDTO" parameterType="Model.MemberDTO">
+select rn, memId, memPw, memAddress, memName, memPhone, memBirth, memGender,
+        memAccount, memEmail, memEmailCk, postNumber, detailAdd
+from(
+	select rownum rn, MEM_ID memId,MEM_PW memPw,MEM_ADDRESS memAddress, MEM_NAME memName,
 	 	   MEM_PHONE memPhone, MEM_BIRTH memBirth, MEM_GENDER memGender, 
 	 	   MEM_ACCOUNT memAccount, MEM_EMAIL memEmail, MEM_EMAIL_CK memEmailCk,
 		   POST_NUMBER postNumber, DETAIL_ADD detailAdd
 	from member
-	<if test="value != null"> <!-- parameterType="string" 클래스가 가지고있는 value 라는 속성이 널이 아니라면 -->
-		where MEM_ID = #{memId}
-	</if>
+)
+	<trim prefix="where" prefixOverrides="AND | OR">
+		<if test="memId != null">
+			memId = #{memId}
+		</if>
+		<if test="startEndPageDTO != null">
+			and rn between #{startEndPageDTO.startRow} 
+			and  #{startEndPageDTO.endRow} 
+		</if>
+	</trim>
 </select>
 
-
+<select id="getMemberCount" resultType="int">
+	select count(*) from member
+</select>
 
 
 </mapper>

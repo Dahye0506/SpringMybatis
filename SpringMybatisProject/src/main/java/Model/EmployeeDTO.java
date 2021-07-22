@@ -3,7 +3,7 @@ package Model;
 import java.util.Date;
 
 import org.springframework.format.annotation.DateTimeFormat;
-//DTO는 디비에 값을 저장하거나 디비로부터 값을 받아오기 위해서 사용
+
 public class EmployeeDTO {
 	String employeeId;
 	String empUserId;
@@ -18,6 +18,15 @@ public class EmployeeDTO {
 	String email;
 	String empAddress;
 
+	StartEndPageDTO startEndPageDTO;	
+	public StartEndPageDTO getStartEndPageDTO() {
+		return startEndPageDTO;
+	}
+	public void setStartEndPageDTO(StartEndPageDTO startEndPageDTO) {
+		this.startEndPageDTO = startEndPageDTO;
+	}
+	
+	
 	public String getEmployeeId() {
 		return employeeId;
 	}

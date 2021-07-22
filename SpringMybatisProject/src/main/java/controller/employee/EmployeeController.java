@@ -35,7 +35,6 @@ public class EmployeeController {
 	EmployeeUpdateService employeeUpdateService;
 	@Autowired
 	EmployeeDeleteService employeeDeleteService;
-		
 	@RequestMapping("empDelete")
 	public String empDelete(
 			@RequestParam(value = "empId") String empId) {
@@ -61,8 +60,9 @@ public class EmployeeController {
 		return "employee/employeeInfo";
 	}
 	@RequestMapping(value = "empList", method = RequestMethod.GET)
-	public String empList(Model model) {
-		employeeListService.empList(model);
+	public String empList(Model model,
+		@RequestParam(value="page" , defaultValue = "1")Integer page) {
+		employeeListService.empList(model, page);
 		return "employee/employeeList";
 	}
 	@RequestMapping(value = "empRegist", method = RequestMethod.GET)
@@ -74,15 +74,14 @@ public class EmployeeController {
 	@Autowired
 	LoginService loginService;
 	@RequestMapping(value="empJoin",method = RequestMethod.POST )
-	public String empJoin(EmployeeCommand employeeCommand,Errors errors,
-			Model model) {
+	public String empJoin(EmployeeCommand employeeCommand,Errors errors) {
 		/// cammand 객체는 html로 부터 넘어온 값을 저장한다.
 		/// 그러므로 @RequestParam을 사용 안해도 된다.
 		new EmployeeCommandValidator().validate(employeeCommand, errors);
 		if(errors.hasErrors()) {
 			return "employee/employeeForm";
 		}
-		AuthInfoDTO authInfo = loginService.logIn(employeeCommand.getEmpUserid(), 
+		AuthInfoDTO authInfo = loginService.logIn(employeeCommand.getEmpUserId(), 
 				employeeCommand.getEmpPw());
 		if(authInfo != null) {
 			errors.rejectValue("empUserid", "duplicate");
@@ -91,9 +90,5 @@ public class EmployeeController {
 		employeeJoinService.empInsert(employeeCommand);
 		return "redirect:empList";
 	}
-	
-	
-	
-	
-	
 }
+	

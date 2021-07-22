@@ -7,7 +7,8 @@
 			"
 >
 
-	
+	<bean class="controller.goods.GoodsCartController"/>
+	<bean class="controller.goods.GoodsViewController"/>
 	<bean class="controller.goods.GoodsController"/>
 	<bean class="repository.GoodsRepository"/>
 	<bean class="service.goods.GoodsNumberService" />
@@ -21,13 +22,11 @@
 	<bean class="service.goods.GoodsCartQtyDownService" />
 	<bean class="service.goods.GoodsBuyService" />
 	<bean class="service.goods.GoodsOrderService" />
-	<bean class="controller.goods.GoodsCartController"/>
-	<bean class="controller.goods.GoodsViewController"/>
-	
-	
+	<bean class="service.goods.OrderProcessListService" />
+	<bean class="service.goods.DoPaymentService" />
+	<bean class="service.goods.ReviewWriteService" />
+	<bean class="service.goods.GoodsReviewUpdateService" />
+	<bean class="service.goods.GoodsReviewsService" />
+	<bean class="service.goods.CartProdDeleteService" />
+	<bean class="service.goods.GoodsCartRemoveService" />
 </beans>
-<!-- 아이디와 클래스명이 같아야한다. -->
-<!-- TIP
-아이디와 클래스명이 다르다면 id와 class를 각각 작성해야 하지만
-아이디와 클래스명이 같을경우 클래스만 작성해도 아이디는 자동 생성 된다.
--->

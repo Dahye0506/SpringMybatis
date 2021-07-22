@@ -38,7 +38,8 @@ public class GoodsOrderService {
 		
 		AuthInfoDTO authInfo = (AuthInfoDTO)session.getAttribute("authInfo");
 		dto.setMemId(authInfo.getUserId());
-		goodsRepository.purchseInsert(dto);// 받아온것 리포시토리에 삽입
+		goodsRepository.purchaseInsert(dto);// 받아온것 리포시토리에 삽입
+		
 				
 		
 		//카트로부터 가져와서 구매리스트에 저장(넘기기)
@@ -49,7 +50,7 @@ public class GoodsOrderService {
 			d.setPurchaseNum(purchaseNum);
 			d.setMemId(authInfo.getUserId());
 			d.setProdNum(prodNum);
-			int i = goodsRepository.purchseListInsert(d);//구매 리스트에 전달
+			int i = goodsRepository.purchaseListInsert(d);//구매 리스트에 전달
 			
 			if(i == 1) {
 				goodsRepository.cartDelete(d);//장바구니에서 삭제가 되었다면 d 넘겨주기

@@ -23,7 +23,7 @@ public class EmployeeJoinService {
 		dto.setEmpName(employeeCommand.getEmpName());
 		//비밀번호 함호화
 		dto.setEmpPw(bcryptPasswordEncoder.encode(employeeCommand.getEmpPw()));
-		dto.setEmpUserId(employeeCommand.getEmpUserid());
+		dto.setEmpUserId(employeeCommand.getEmpUserId());
 		dto.setHireDate(employeeCommand.getHireDate());
 		dto.setJobId(employeeCommand.getJobId());
 		dto.setOfficeNumber(employeeCommand.getOfficeNumber());

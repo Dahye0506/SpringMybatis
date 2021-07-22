@@ -38,10 +38,10 @@
 <body>
 <table>
 	<tr><td rowspan="5">
-	<img src= "../goods/upload/${goodsCommand.prodImage.split(',')[0] }" /></td>
-									<td>${goodsCommand.prodName }</td></tr>
-	<tr>					        <td>${goodsCommand.prodPrice }</td></tr>
-	<tr>				            <td>${goodsCommand.prodDelFee }</td></tr>
+	<img src= "../goods/upload/${goodsReviews.goods.prodImage.split(',')[0] }" /></td>
+									<td>${goodsReviews.goods.prodName }</td></tr>
+	<tr>					        <td>${goodsReviews.goods.prodPrice }</td></tr>
+	<tr>				            <td>${goodsReviews.goods.prodDelFee }</td></tr>
 	<tr>				            <td>수량 
 			<input type="number" min= "1" step="1" value="1" name="cartQty" id ="cartQty"/>
 									</td></tr>
@@ -51,14 +51,29 @@
 									<button id="buy">바로구매</button>
 									</td></tr>
 	<tr>
-	<td colspan="2">
-	${fn:replace(goodsCommand.prodDetail, br , "<br />") }
-	<p>
-	<c:forTokens items="${goodsCommand.prodImage }" delims="," var="image">
-		<img src="../goods/upload/${image }" /><br />
-	</c:forTokens>
-	</p>
-	</td></tr>
+		<td colspan="2">
+			${fn:replace(goodsReviews.goods.prodDetail, br , "<br />") }
+			<p>
+				<c:forTokens items="${goodsReviews.goods.prodImage }" delims="," var="image">
+					<img src="../goods/upload/${image }" /><br />
+				</c:forTokens>
+			</p>
+		</td>
+	</tr>
 </table>
+
+리뷰
+<hr />
+<c:forEach items="${goodsReviews.reviews }" var="dto">
+<p>
+	구매일자 : <fmt:formatDate value="${dto.reviewDate }" pattern="yyyy-MM-dd"/> <br />
+	${fn:replace(dto.reviewContent, br , "<br />") }<br />
+	<c:if test="${dto.reviewImg == ''}">
+	<img src="goods/review/${dto.reviewImg }" />
+	</c:if>
+<p>
+</c:forEach>
+
+
 </body>
 </html>

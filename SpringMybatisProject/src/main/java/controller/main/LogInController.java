@@ -1,5 +1,7 @@
 package controller.main;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,16 +22,15 @@ public class LogInController {
 		return "redirect:/";
 	}
 	
-	
 	@Autowired
 	LoginService loginService;
 	@RequestMapping(method = RequestMethod.POST)
-	public String login(LogInCommand logInCommand, Errors errors, HttpSession session) {
+	public String login(LogInCommand logInCommand, Errors errors, HttpSession session, HttpServletResponse response) {
 		new LogInCommandValidator().validate(logInCommand, errors);
 		if(errors.hasErrors()) {
 			return "main/main";
 		}
-		loginService.logIn1(logInCommand, errors, session); 
+		loginService.logIn1(logInCommand, errors, session,response); 
 		if(errors.hasErrors()) {
 			return "main/main";
 		}
@@ -37,7 +38,13 @@ public class LogInController {
 	}
 
 	@RequestMapping("logOut")
-	public String logOut(HttpSession session) {
+	public String logOut(HttpSession session, HttpServletResponse response) {
+		//자동로그인 쿠키 삭제
+		Cookie cookie = new Cookie("autoLogin", "");
+		cookie.setPath("/");
+		cookie.setMaxAge(0);
+		response.addCookie(cookie);
+		
 		session.invalidate();
 		return "redirect:/";
 	}

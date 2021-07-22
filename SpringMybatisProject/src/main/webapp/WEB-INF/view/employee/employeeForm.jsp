@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8" isELIgnored="false"%>
-
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <!DOCTYPE html>
 <html>
@@ -9,17 +8,18 @@
 <title>Insert title here</title>
 </head>
 <body>
-<form:form action="empJoin.em" method="post" name="frm" modelAttribute="employeeCommand">
+<form:form action="empJoin" method="post" name="frm" 
+									modelAttribute="employeeCommand" >
 <table border = 1 align="center">
 	<tr><td>사원번호</td>
 		<td>                               				
-			<form:input path="employeeId"/>
+			<form:input path="employeeId" value="${empNo }"/>
 			<form:errors path="employeeId"/>
 		</td></tr>
 	<tr><td>사원아이디</td>
 		<td>
-			<form:input path="empUserid"/>
-			<form:errors path="empUserid"/>
+			<form:input path="empUserId"/>
+			<form:errors path="empUserId"/>
 		</td></tr>
 	<tr><td>비밀번호</td>
 		<td>
@@ -44,11 +44,12 @@
 	<tr><td>직무</td>
 		<td>
 			<form:input path="jobId"/>
+			<!-- <input type="text" name="jobId" value="${jobId}" -->
 			<form:errors path="jobId"/>
 		</td></tr>
 	<tr><td>연락처</td>
 		<td>
-			<form:input path="phNumber"  
+			<form:input path="phNumber" 
 					placeholder="010-1234-1234"/>
 			<form:errors path="phNumber"/>
 		</td></tr>
@@ -60,12 +61,12 @@
 		</td></tr>
 	<tr><td>이메일</td>
 		<td>
-			<form:input path="email"/>
+			<form:input path="email"  />
 			<form:errors path="email"/>
 		</td></tr>
 	<tr><td>사무실 주소</td>
 		<td>
-			<form:input path="empAddress"/>
+			<form:input path="empAddress"  />
 			<form:errors path="empAddress"/>
 		</td></tr>
 	<tr><td colspan="2">
