@@ -19,7 +19,7 @@
 				url : "<c:url value='/cart/goodsCartAdd' />",
 				dataType : "text",
 				data : {"cartQty":cartQty,"prodNum":prodNum,
-						"prodPrice":${goodsCommand.prodPrice} },
+						"prodPrice":${goodsCommand.prodPrice} ,
 				// data : "cartQty="+cartQty +"&prodNum="+prodNum
 				success : function(result){
 					if(result.trim() == "1"){// 정상적으로 장바구니에 상품 등록
@@ -32,12 +32,45 @@
 				}
 			});
 		});
+		
+		//관심상품
+		$("#wishBtn").click(function(){
+			$.ajax({
+				type: "POST",
+				url: "../goods/goodsWishAdd",
+				data : {"prodNum": "${goodsReviews.goods.prodNum}"},
+				dataType : "text",
+				success:function(result){
+					if(result.trim() == "1"){
+						$("#wishBtn").attr("src","../images/right_arrow.png");
+						alert("관심상품에 등록되었습니다.")
+					}else if(result.trim() == "0"){
+						$("#wishBtn").attr("src","../images/left_arrow.png");
+						alert("관심상품이 해지되었습니다.")
+					}else{
+						alert("로그인 하세요.");
+					}
+				},
+				error: function(){
+					alert('로그인 아웃 되었습니다.\n다시 로그인 해 주세요.');
+					location.href="../main";
+					return;
+				}
+			});
+		});
 	});
 </script>
 </head>
 <body>
 <table>
-	<tr><td rowspan="5">
+	<tr><td rowspan="6">
+		관심상품
+		<c:if test="${num ==0 }">
+			<img src="../images/left_arrow.png" id ="wishBtn">
+		</c:if>
+		<c:if test="${num ==1 }">
+			<img src="../images/right_arrow.png" id ="wishBtn">
+		</c:if>
 	<img src= "../goods/upload/${goodsReviews.goods.prodImage.split(',')[0] }" /></td>
 									<td>${goodsReviews.goods.prodName }</td></tr>
 	<tr>					        <td>${goodsReviews.goods.prodPrice }</td></tr>

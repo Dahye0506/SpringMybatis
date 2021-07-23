@@ -1,7 +1,7 @@
 <%@page import="org.apache.velocity.runtime.directive.Include"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8" isELIgnored="false"%>
-<%@ Include file="../include/includeTags.jsp" %>
+<%@ include file="../include/includeTags.jsp" %>
 <!DOCTYPE html>
 <html>
 <head>

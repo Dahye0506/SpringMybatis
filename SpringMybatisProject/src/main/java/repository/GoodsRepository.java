@@ -14,6 +14,7 @@ import Model.PaymentDTO;
 import Model.ProductCartDTO;
 import Model.PurchaseDTO;
 import Model.ReviewDTO;
+import Model.WishDTO;
 
 
 public class GoodsRepository {
@@ -21,6 +22,27 @@ public class GoodsRepository {
 	SqlSession sqlSession;//jdbc에있는 sqlsession받아오기
 	String namespace = "mappers.goodsMapper";
 	String statement;
+	
+	
+	public Integer wishCount(WishDTO dto) {
+		statement = namespace + ".wishCount";
+		return sqlSession.selectOne(statement, dto);
+	}
+	
+	
+	//wish
+	public int wishAdd(WishDTO dto) {
+		statement = namespace + ".wishAdd";
+		sqlSession.insert(statement, dto);
+		
+		statement = namespace + ".wishCount";
+		return sqlSession.selectOne(statement, dto);
+	}
+	
+//	create table wish(
+//			PROD_NUM NUMBER NOT NULL,
+//			MEM_ID VARCHAR2(20) NOT NULL
+//			);	
 	
 	public void cartRemove(Map<String, Object> condition) {
 		statement = namespace + ".cartRemove";

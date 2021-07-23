@@ -16,11 +16,11 @@
 	modelAttribute="logInCommand">
 <table>
 	<tr><td colspan="3">
-	아이디저장 <input type="checkbox" name="idStore" 
-	<c:if test="${!empty isId }">checked</c:if>/>
-	| 자동로그인<input type="checkbox" name="autoLogin" /></td></tr>
+		  아이디저장<input type="checkbox" name="idStore" 
+		  <c:if test="${!empty isId }">checked</c:if> />
+		 | 자동로그인<input type="checkbox" name="autoLogin" /></td></tr>
 	<tr><td>아이디</td>
-		<td><form:input  path="userId" value="${isId }"/>
+		<td><form:input path="userId"  value="${isId }"/>
 			<form:errors path="userId"  /> </td>
 		<td rowspan="2">
 		<input type="image" src="images/img1.jpg" width="100" alt="login"/>
@@ -54,9 +54,10 @@
 	<a href="emp/empList">직원 리스트</a>
 	<a href="goods/goodsList">상품리스트</a>
 	<a href="admin/noticeList">공지사항</a>
-	<a href="lib/libBoard">자료실</a>
-	<a href="board/boardList">게시판</a>
+	<a href="lib/libBoard" >자료실</a>
+	<a href="board/boardList" >게시판</a>
 	</c:if>
+	<a href ="chatting" >chatting</a>
 	<a href="login/logOut">logOut</a>
 <!-- 
 	<a href="ajaxTest">ajax</a>

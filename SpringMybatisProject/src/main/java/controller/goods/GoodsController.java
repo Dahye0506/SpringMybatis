@@ -15,6 +15,7 @@ import service.goods.GoodsDetailService;
 import service.goods.GoodsListService;
 import service.goods.GoodsNumberService;
 import service.goods.GoodsUpdateService;
+import service.goods.GoodsWishService;
 import service.goods.GoodsWriteService;
 import validator.GoodsCommandValidate;
 
@@ -33,7 +34,21 @@ public class GoodsController {
 	GoodsListService goodsListService;
 	@Autowired
 	GoodsDeleteService goodsDeleteService;
-
+	@Autowired
+	GoodsWishService goodsWishService;
+	
+	
+	
+	
+	//위시리스트
+	@RequestMapping("goodsWishAdd")
+	public String GoodsWishAdd(@RequestParam(value="prodNum") String prodNum, HttpSession session, Model model) {
+		goodsWishService.goodsWishAdd(prodNum, session, model);
+		return "goods/whish";
+		
+	}
+	
+	
 	//상품리스트
 	@RequestMapping("goodsList")
 	public String list(Model model) {

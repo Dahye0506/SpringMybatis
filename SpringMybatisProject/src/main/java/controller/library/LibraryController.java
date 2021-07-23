@@ -30,8 +30,7 @@ public class LibraryController {
 	LibraryModifyService libraryModifyService;
 	@Autowired
 	LibraryDeleteService libraryDeleteService;
-
-
+	
 	
 	
 	@RequestMapping("fileDown")
@@ -46,14 +45,14 @@ public class LibraryController {
 	}
 	
 	@RequestMapping("libDel")
-	public String libDel(@RequestParam(value="noticeNo") String noticeNo) {
-		libraryDeleteService.libDel(noticeNo);
+	public String libDel(@RequestParam(value="noticeNo") String noticeNo,HttpSession session) {
+		libraryDeleteService.libDel(noticeNo,session);
 		return "redirect:libBoard";
 	}
 	
 	@RequestMapping(value ="libModify", method = RequestMethod.POST)
-	public String libModify(LibraryCommand libraryCommand) {
-		libraryModifyService.libModify(libraryCommand);
+	public String libModify(LibraryCommand libraryCommand, HttpSession session) {
+		libraryModifyService.libModify(libraryCommand, session);
 		return "redirect:libraryInfo?noticeNo="+libraryCommand.getNoticeNo();
 	}
 	

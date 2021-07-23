@@ -15,10 +15,12 @@
 		</tr>
 		<tr>
 			<td>내용</td>
-			<td><textarea rows="6" cols="30" name="noticeCon"></textarea> /></td>
+			<td><textarea rows="6" cols="30" name="noticeCon"></textarea> </td>
 		</tr>
-		<tr>
-			<td>파일</td><input type="file" name="noticeFile" multiple="multiple"/><td></td>
+		<tr><td>파일</td>
+			<td>
+				<input type="file" name="noticeFile" multiple="multiple"/>
+			</td>
 		</tr>
 		<tr>
 			<td colspan="2">

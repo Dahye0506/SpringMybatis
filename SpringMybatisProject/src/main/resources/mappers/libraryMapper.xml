@@ -14,7 +14,10 @@
 
 <update id="libModify" parameterType="Model.LibraryDTO">
 	update notice
-	set NOTICE_SUB =#{noticeSub}, NOTICE_CON = #{noticeCon}
+	set NOTICE_SUB =#{noticeSub}, NOTICE_CON = #{noticeCon},
+	notice_org_file = #{noticeOrgfile},
+	notice_file_size = #{jnoticeFileSize},
+	notice_file = #{noticeFile}
 	where NOTICE_NO = #{noticeNo} and NOTICE_KIND = '자료실'
 
 </update>

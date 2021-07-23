@@ -13,6 +13,8 @@ import service.goods.GoodsDetailService;
 public class GoodsViewController {
 	@Autowired
 	GoodsDetailService goodsDetailService;
+	
+	
 	@RequestMapping("goodsView")
 	public String goodsView(
 			@RequestParam(value="prodNum") String prodNum,
@@ -20,4 +22,9 @@ public class GoodsViewController {
 		goodsDetailService.goodsDetail(prodNum, model);
 		return "goods/goodsView";
 	}
+	
+	
+	
+	
+	
 }
