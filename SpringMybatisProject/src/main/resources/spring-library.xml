@@ -6,7 +6,7 @@
 			http://www.springframework.org/schema/beans/spring-beans.xsd
 			"
 >
-	
+
 	
 	<bean class="controller.library.LibraryController"/>
 	<bean class="service.library.LibraryService"/>
